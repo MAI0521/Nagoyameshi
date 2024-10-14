@@ -25,7 +25,7 @@
                                 </ol>
                             </nav>
             
-                            <h1 class="mb-4 text-center" th:text="${restaurant.getName()} +  'レビュー編集'"></h1> 
+                            <h1 class="mb-4 text-center" th:text="${restaurant.getVenueName()} +  'レビュー編集'"></h1> 
                                         
                             <div>
                                 <form method="post" th:action="@{/restaurants/__${restaurant.getId()}__/reviews/__${review.getId()}__/update}" th:object="${reviewEditForm}">                                                          

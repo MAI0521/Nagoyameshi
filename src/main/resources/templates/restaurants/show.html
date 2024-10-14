@@ -1,9 +1,12 @@
  <!DOCTYPE html>
- 	<html xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">    
      <head>
-		 <div th:replace="~{fragment :: meta}"></div>    
+         <div th:replace="~{fragment :: meta}"></div>   
               
-         <div th:replace="~{fragment :: styles}"></div> 
+         <div th:replace="~{fragment :: styles}"></div>
+         
+         <!-- Flatpickr -->
+         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
            
          <title>店舗詳細</title>   
       </head>
@@ -24,7 +27,7 @@
                                  </ol>
                                  <!-- Add to favorites if not already favorited and user is authenticated -->
 									<a class = "favorite"
-									sec:authorize="isAuthenticated()" 
+									   sec:authorize="hasAnyAuthority('ROLE_PAID')" 
 									   th:if="${favorite == null}"
 									   href="#" 
 									   onclick="document.getElementById('favorite-form').submit(); return false;">
@@ -38,7 +41,7 @@
 									
 									<!-- Remove from favorites if already favorited and user is authenticated -->
 									<a class = "favorite"
-										sec:authorize="isAuthenticated()" 
+									   sec:authorize="hasAnyAuthority('ROLE_PAID')" 
 									   th:if="${favorite != null and favorite.user.email == currentUserName}" 
 									   href="#" 
 									   onclick="document.getElementById('favorite-form-delete').submit(); return false;">
@@ -49,18 +52,7 @@
 									      method="post" 
 									      style="display: none;">
 									</form>   
-									<a class = "favorite"
-										sec:authorize="isAuthenticated()" 
-									   th:if="${favorite != null and favorite.user.email != currentUserName}"  
-									   href="#" 
-									   onclick="document.getElementById('favorite-form').submit(); return false;">
-									   ♡お気に入り追加
-									</a>
-									<form id="favorite-form" 
-									      th:action="@{/restaurants/__${restaurant.getId()}__/favorites-delete}" 
-									      method="post" 
-									      style="display: none;">
-									</form>  
+
                              </nav> 
                              
                              <h1 class="mb-4 text-center" th:text="${restaurant.getVenueName()}"></h1>                                               
@@ -180,27 +172,27 @@
 			                                 </div>  
 			                             </div> 
 			                             <div sec:authorize="isAuthenticated()" class="col-lg-4 px-0 ps-lg-4 mb-4">                  
-<!--	                                         <div class="card">-->
-<!--	                                             <div class="card-body"> -->
-<!--	                                                 <form method="get" th:action="@{/restaurants/__${restaurant.getId()}__/reservations/input}" th:object="${reservationInputForm}">                                                                                                                                                                       -->
-<!--	                                                     <div class="form-group mb-2">                                            -->
-<!--	                                                         <label for="fromCheckinDateToCheckoutDate" class="col-form-label text-md-left fw-bold">チェックイン・チェックアウト</label>    -->
-<!--	                                                         <div th:if="${#fields.hasErrors('fromCheckinDateToCheckoutDate')}" class="text-danger small mb-2" th:errors="*{fromCheckinDateToCheckoutDate}"></div>                                          -->
-<!--	                                                         <input type="text" class="form-control" th:field="*{fromCheckinDateToCheckoutDate}">                                                                     -->
-<!--	                                                     </div>-->
-	                                                     
-<!--	                                                     <div class="form-group mb-4">                                            -->
-<!--	                                                         <label for="numberOfPeople" class="col-form-label text-md-left fw-bold">宿泊人数</label>  -->
-<!--	                                                         <div th:if="${#fields.hasErrors('numberOfPeople')}" class="text-danger small mb-2" th:errors="*{numberOfPeople}"></div>                                            -->
-<!--	                                                         <input type="number" class="form-control" th:field="*{numberOfPeople}" min="1">                                                                     -->
-<!--	                                                     </div>-->
-	                                                                                                         
-<!--	                                                     <div class="form-group">-->
-<!--	                                                         <button type="submit" class="btn text-white shadow-sm w-100 nagoyameshi-btn">予約する</button>-->
-<!--	                                                     </div>-->
-<!--	                                                 </form> -->
-<!--	                                             </div>-->
-<!--	                                         </div>-->
+                                         <div class="card">
+                                             <div class="card-body"> 
+                                                 <form method="get" th:action="@{/restaurants/__${restaurant.getId()}__/reservations/input}" th:object="${reservationInputForm}">                                                                                                                                                                       
+                                                     <div class="form-group mb-2">                                            
+                                                         <label for="fromReservationDateTime" class="col-form-label text-md-left fw-bold">予約日時</label>    
+                                                         <div th:if="${#fields.hasErrors('fromReservationDateTime')}" class="text-danger small mb-2" th:errors="*{fromReservationDateTime}"></div>                                          
+                                                         <input type="text" class="form-control" placeholder="例: 2024-12-31 18:30" th:field="*{fromReservationDateTime}">                                                                     
+                                                     </div>
+                                                     
+                                                     <div class="form-group mb-4">                                            
+                                                         <label for="reservationCount" class="col-form-label text-md-left fw-bold">予約人数</label>  
+                                                         <div th:if="${#fields.hasErrors('reservationCount')}" class="text-danger small mb-2" th:errors="*{reservationCount}"></div>                                            
+                                                         <input type="number" class="form-control" th:field="*{reservationCount}" min="1">                                                                     
+                                                     </div>
+                                                                                                         
+                                                     <div class="form-group">
+                                                         <button type="submit" class="btn text-white shadow-sm w-100 nagoyameshi-btn">予約する</button>
+                                                     </div>
+                                                 </form> 
+                                             </div>
+                                         </div>
                                                                                   
                                      </div>                                                                                                                        
                                  </div>                                                                                             
@@ -220,12 +212,13 @@
 	                        <div> 
 		                        <div class="reviewbox-container mt-4 w-100">
 			                        <div class="review-box mb-3" th:each="review : ${review}">
-										<div class="box">
-											<div class="edit-delete">
-											<p th:if="${review.user.email == currentUserName}">
-											<a th:href="@{/restaurants/__${restaurant.getId()}__/reviews/__${review.getId()}__/edit}" style="margin-right: 10px">編集 </a>                                                                                
-	                                    	<a href="#" class="nagoyameshi-link-danger" data-bs-toggle="modal" th:data-bs-target="${'#deleteReviewModal' + review.getId()}"> 削除</a>
-	                                    </div>	
+										<div class="box" >
+											<div class="edit-delete" sec:authorize="hasAnyAuthority('ROLE_PAID')">
+												<p th:if="${review.user.email == currentUserName}">
+												<a th:href="@{/restaurants/__${restaurant.getId()}__/reviews/__${review.getId()}__/edit}" style="margin-right: 10px">編集 </a>                                                                                
+		                                    	<a href="#" class="nagoyameshi-link-danger" data-bs-toggle="modal" th:data-bs-target="${'#deleteReviewModal' + review.getId()}"> 削除</a>
+		                                    	</p>
+	                                    	</div>	
 	                                    	<p><strong th:text="${review.user.fullName}"></strong></p>
 				                          <!-- User name -->
 				                            <p>
@@ -241,6 +234,25 @@
 				                            <p><small th:text="${#dates.format(review.createdAt, 'yyyy年M月d日')}"></small></p> 
 		  		                            <p><span th:text="${review.comment}"></span></p> 
 	                                    	</p>
+	                                    	
+	                                    	
+                                                                             <!-- 削除用モーダル -->
+		                                         <div class="modal fade" th:id="${'deleteReviewModal' + review.getId()}" tabindex="-1" th:aria-labelledby="${'deleteReviewModalLabel' + review.getId()}">
+		                                             <div class="modal-dialog">
+		                                                 <div class="modal-content">
+		                                                     <div class="modal-header">
+		                                                         <h5 class="modal-title" th:id="${'deleteReviewModalLabel' + review.getId()}" th:text="${'レビューを削除してもよろしいですか？'}"></h5>
+		                                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="閉じる"></button>
+		                                                     </div>
+		                                                     <div class="modal-footer">
+		                                                         <form method="post"th:action="@{/restaurants/__${restaurant.getId()}__/reviews/__${review.getId()}__/delete}">
+		                                                             <button type="submit" class="btn nagoyameshi-btn-danger text-white shadow-sm">削除</button>
+		                                                         </form>
+		                                                     </div>
+		                                                 </div>
+		                                             </div>
+		                                         </div>
+	                                    	
 	                                    	</div>
 			                        	</div>
 		                        	</div>
@@ -258,12 +270,27 @@
 		                     </div>
 		                 </div>             
              </main>
+
+			 
+			 
              
              <!-- フッター -->
-             <div th:replace="~{fragment :: footer}"></div>
-         </div>    
+             <div th:replace="~{fragment :: footer}"></div>  
+         <div th:replace="~{fragment :: scripts}"></div>   
          
-         <!-- Bootstrap -->
-         <div th:replace="~{fragment :: scripts}"></div>           
+         <!-- Flatpickr -->
+         <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+         <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ja.js"></script>
+         <script th:src="@{/js/flatpickr.js}"></script>    
+         <script>
+		    document.addEventListener('DOMContentLoaded', function () {
+		        flatpickr("#reservationDateTime", {
+		            enableTime: true,
+		            dateFormat: "Y-m-d H:i",  // Custom date-time format
+		            time_24hr: true           // 24-hour time format
+		        });
+		    });
+		</script>
+		</div>  
      </body>
  </html>

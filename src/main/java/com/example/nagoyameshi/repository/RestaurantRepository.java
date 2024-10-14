@@ -18,16 +18,60 @@ import com.example.nagoyameshi.entity.Restaurant;
 	Page<Restaurant> findByVenueNameOrDescriptionLikeOrderByBudgetRangeDesc(@Param("keyword") String keyword, Pageable pageable);
 	@Query("SELECT r FROM Restaurant r WHERE r.venueName LIKE %:keyword% OR r.description LIKE %:keyword% ORDER BY r.createdAt DESC")
 	Page<Restaurant> findByVenueNameOrDescriptionLikeOrderByCreatedAtDesc(@Param("keyword") String keyword, Pageable pageable);
+	@Query("SELECT r FROM Restaurant r " +
+		       "LEFT JOIN Review rv ON r.id = rv.restaurant.id " +
+		       "WHERE r.venueName LIKE %:keyword% OR r.description LIKE %:keyword% " +
+		       "GROUP BY r.id " +
+		       "ORDER BY COUNT(rv.id) DESC")
+	Page<Restaurant> findByVenueNameOrDescriptionLikeSortedByReviewCount(@Param("keyword") String keyword, Pageable pageable);
+	@Query("SELECT r FROM Restaurant r " +
+		       "LEFT JOIN Review rv ON r.id = rv.restaurant.id " +
+		       "WHERE r.venueName LIKE %:keyword% OR r.description LIKE %:keyword% " +
+		       "GROUP BY r.id " +
+		       "ORDER BY AVG(rv.starId) DESC")
+	Page<Restaurant> findByVenueNameOrDescriptionLikeSortedByAverageScore(@Param("keyword") String keyword, Pageable pageable);
+//	
 	public Page<Restaurant> findByCategoryIdOrderByBudgetRangeAsc(Integer categoryId, Pageable pageable);
 	public Page<Restaurant> findByCategoryIdOrderByBudgetRangeDesc(Integer categoryId, Pageable pageable);
 	public Page<Restaurant> findByCategoryIdOrderByCreatedAtDesc (Integer categoryId, Pageable pageable);
-	public Page<Restaurant> findByBudgetRangeOrderByBudgetRangeAsc(Integer budgetrange, Pageable pageable); 
-    public Page<Restaurant> findByBudgetRangeOrderByBudgetRangeDesc(Integer budgetrange, Pageable pageable); 
-    public Page<Restaurant> findByBudgetRangeOrderByCreatedAtDesc(Integer budgetrange, Pageable pageable); 
+	@Query("SELECT r FROM Restaurant r " +
+			   "LEFT JOIN Review rv ON r.id = rv.restaurant.id " +
+			   "WHERE r.category.id = :categoryId " +
+			   "GROUP BY r.id " +
+	           "ORDER BY COUNT(rv.id) DESC")
+	public Page<Restaurant> findByCategoryIdSortedByReviewCount(Integer categoryId, Pageable pageable);
+	@Query("SELECT r FROM Restaurant r " +
+			"LEFT JOIN Review rv ON r.id = rv.restaurant.id " +
+			"WHERE r.category.id = :categoryId " +
+			"GROUP BY r.id ORDER BY AVG(rv.starId) DESC")
+	public Page<Restaurant> findByCategoryIdSortedByAverageScore(Integer categoryId, Pageable pageable);	
+//	
+	public Page<Restaurant> findByBudgetRangeOrderByBudgetRangeAsc(Integer budgetRange, Pageable pageable); 
+    public Page<Restaurant> findByBudgetRangeOrderByBudgetRangeDesc(Integer budgetRange, Pageable pageable); 
+    public Page<Restaurant> findByBudgetRangeOrderByCreatedAtDesc(Integer budgetRange, Pageable pageable);  
+    @Query("SELECT r FROM Restaurant r " +
+ 		   "LEFT JOIN Review rv ON r.id = rv.restaurant.id " +
+ 		   "WHERE r.budgetRange = :budgetRange " + 
+            "GROUP BY r.id " +
+            "ORDER BY COUNT(rv.id) DESC")
+    public Page<Restaurant> findByBudgetRangeSortedByReviewCount(Integer budgetRange, Pageable pageable);
+    @Query("SELECT r FROM Restaurant r " +
+			"LEFT JOIN Review rv ON r.id = rv.restaurant.id " +
+			"WHERE r.budgetRange = :budgetRange " + 
+			"GROUP BY r.id ORDER BY AVG(rv.starId) DESC")
+    public Page<Restaurant> findByBudgetRangeSortedByAverageScore(Integer budgetRange, Pageable pageable);
+//    
     public Page<Restaurant> findAllByOrderByBudgetRangeAsc(Pageable pageable);
     public Page<Restaurant> findAllByOrderByBudgetRangeDesc(Pageable pageable);  
     public Page<Restaurant> findAllByOrderByCreatedAtDesc(Pageable pageable); 
 	public Restaurant getRestaurantById(Integer id);
-//	public Page<Restaurant> findAllByOrderByReviewCountDesc(Pageable pageable); 
-//	public Page<Restaurant> findAllByOrderByAverageScoreDesc(Pageable pageable);
+	@Query("SELECT r FROM Restaurant r " +
+		   "LEFT JOIN Review rv ON r.id = rv.restaurant.id " +
+           "GROUP BY r.id " +
+           "ORDER BY COUNT(rv.id) DESC")
+    Page<Restaurant> findAllSortedByReviewCount(Pageable pageable);
+	@Query("SELECT r FROM Restaurant r " +
+			"LEFT JOIN Review rv ON r.id = rv.restaurant.id " +
+			"GROUP BY r.id ORDER BY AVG(rv.starId) DESC")
+	Page<Restaurant> findAllSortedByAverageScore(Pageable pageable);
  }

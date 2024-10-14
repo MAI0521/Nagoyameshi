@@ -1,5 +1,9 @@
 package com.example.nagoyameshi.service;
 
+import java.util.Map;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -69,4 +73,45 @@ public class UserService {
         User currentUser = userRepository.getReferenceById(userEditForm.getId());
         return !userEditForm.getEmail().equals(currentUser.getEmail());      
     }  
+    
+    private static final Logger logger = LoggerFactory.getLogger(UserService.class);
+    
+    @Transactional
+    public User createCheckoutSession(Map<String, String> paymentIntentObject) {
+    	if (paymentIntentObject == null || !paymentIntentObject.containsKey("userName") || !paymentIntentObject.containsKey("signupDate")) {
+            logger.error("Invalid payment intent object: {}", paymentIntentObject);
+            throw new IllegalArgumentException("Invalid payment intent data.");
+        }
+
+        // Extract the username and other relevant data from the payment intent object
+        String userName = paymentIntentObject.get("userName");
+        String signupDate = paymentIntentObject.get("signupDate");
+
+        // Retrieve the user by email (assuming userName is the email)
+        User user = userRepository.findByEmail(userName);
+
+        // Check if the user exists
+        if (user != null) {
+            // Assuming you have a field in User to track membership status
+            user.setPaidLicense(true); // Update the user's membership status
+            userRepository.save(user); // Save the updated user back to the repository
+            logger.info("User membership status updated for: {}", userName);
+            return user;
+        } else {
+            logger.warn("User not found for email: {}", userName);
+            throw new UserNotFoundException("User not found for email: " + userName); // Or handle accordingly
+        }
+    }
+    
+    @Transactional
+    public User updateUserPaidStatus(String email) {
+        User user = userRepository.findByEmail(email);
+        if (user != null) {
+            user.setPaidLicense(true);
+            userRepository.save(user);
+            logger.info("Activated paid license for user: {}", user);
+            return user;
+        }
+        throw new UserNotFoundException("User not found for email: " + email);
+    }
 }

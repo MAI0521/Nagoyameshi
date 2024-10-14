@@ -22,7 +22,7 @@ import com.example.nagoyameshi.entity.Category;
 import com.example.nagoyameshi.entity.Favorite;
 import com.example.nagoyameshi.entity.Restaurant;
 import com.example.nagoyameshi.entity.Review;
-//import com.example.nagoyameshi.form.ReservationInputForm;
+import com.example.nagoyameshi.form.ReservationInputForm;
 import com.example.nagoyameshi.repository.CategoryRepository;
 import com.example.nagoyameshi.repository.FavoriteRepository;
 import com.example.nagoyameshi.repository.RestaurantRepository;
@@ -65,12 +65,18 @@ public class RestaurantController {
         List<Object[]> reviewCounts = reviewService.getReviewCountPerRestaurant();
         List<Object[]> averageReviews = reviewService.getAverageReviewsPerRestaurant();
         
+        
+//        reviewCounts.sort(Comparator.comparingDouble((Object[] arr) -> (Long) arr[1]).reversed());
                 
     	if (categoryId != null) {
     		if (order != null && order.equals("budgetRangeAsc")) {
     			restaurantPage = restaurantRepository.findByCategoryIdOrderByBudgetRangeAsc(categoryId, pageable); 
     		} else if (order != null && order.equals("budgetRangeDesc")) {
     			restaurantPage = restaurantRepository.findByCategoryIdOrderByBudgetRangeDesc(categoryId, pageable);
+    		} else if (order != null && order.equals("reviewCountDesc")) {
+        		restaurantPage = restaurantRepository.findByCategoryIdSortedByReviewCount(categoryId, pageable);
+        	} else if (order != null && order.equals("averageScoreDesc")) {
+            		restaurantPage = restaurantRepository.findByCategoryIdSortedByAverageScore(categoryId, pageable);
     		} else {
     			restaurantPage = restaurantRepository.findByCategoryIdOrderByCreatedAtDesc(categoryId, pageable); 
     		}
@@ -81,6 +87,10 @@ public class RestaurantController {
         		restaurantPage = restaurantRepository.findByVenueNameOrDescriptionLikeOrderByBudgetRangeAsc(keywords, pageable);  
         	} else if (order != null && order.equals("budgetRangeDesc")) {
         		restaurantPage = restaurantRepository.findByVenueNameOrDescriptionLikeOrderByBudgetRangeDesc(keywords, pageable); 
+        	} else if (order != null && order.equals("reviewCountDesc")) {
+        		restaurantPage = restaurantRepository.findByVenueNameOrDescriptionLikeSortedByReviewCount(keywords, pageable);
+        	} else if (order != null && order.equals("averageScoreDesc")) {
+        		restaurantPage = restaurantRepository.findByVenueNameOrDescriptionLikeSortedByAverageScore(keywords, pageable);
         	} else {
         		restaurantPage = restaurantRepository.findByVenueNameOrDescriptionLikeOrderByCreatedAtDesc(keywords, pageable); 
         	}
@@ -89,6 +99,10 @@ public class RestaurantController {
         		restaurantPage = restaurantRepository.findByBudgetRangeOrderByBudgetRangeAsc(budgetRange, pageable);
         	} else if (order != null && order.equals("budgetRangeDesc")) {
         		restaurantPage = restaurantRepository.findByBudgetRangeOrderByBudgetRangeDesc(budgetRange, pageable);
+        	} else if (order != null && order.equals("reviewCountDesc")) {
+        		restaurantPage = restaurantRepository.findByBudgetRangeSortedByReviewCount(budgetRange, pageable);
+        	} else if (order != null && order.equals("averageScoreDesc")) {
+        		restaurantPage = restaurantRepository.findByBudgetRangeSortedByAverageScore(budgetRange, pageable);
         	} else {
         		restaurantPage = restaurantRepository.findByBudgetRangeOrderByCreatedAtDesc(budgetRange, pageable);
         	}
@@ -97,6 +111,10 @@ public class RestaurantController {
         		restaurantPage = restaurantRepository.findAllByOrderByBudgetRangeAsc(pageable);
         	} else if (order != null && order.equals("budgetRangeDesc")) {
         		restaurantPage = restaurantRepository.findAllByOrderByBudgetRangeDesc(pageable);
+        	} else if (order != null && order.equals("reviewCountDesc")) {
+        		restaurantPage = restaurantRepository.findAllSortedByReviewCount(pageable);
+        	} else if (order != null && order.equals("averageScoreDesc")) {
+        		restaurantPage = restaurantRepository.findAllSortedByAverageScore(pageable);
         	} else {
         		restaurantPage = restaurantRepository.findAllByOrderByCreatedAtDesc(pageable);
         	}
@@ -112,6 +130,7 @@ public class RestaurantController {
         
         return "restaurants/index";
     }
+   
     
     @GetMapping("/{restaurantId}")
     public String getRestaurantById(@PathVariable("restaurantId") Integer restaurantId,
@@ -141,6 +160,8 @@ public class RestaurantController {
 	         // Handle the case where the house is not found
 	         return "redirect:/error";
 	     }
+	     
+	     model.addAttribute("reservationInputForm", new ReservationInputForm());
 	     return "restaurants/show";
     }
 

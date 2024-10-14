@@ -40,7 +40,7 @@
 		                                 </div>
 		                                 <div class="card-body">
 		                                     <form method="get" th:action="@{/admin/restaurants}" class="w-100">
-		                                         <div class="form-group mb-3 nagoyameshi-horizontal-card-image w-100">    
+		                                         <div class="form-group mb-3 w-100">    
 		                                             <select id="categorySelect" name="category" th:value="*{categoryId}" class="form-control form-select">
 		                                                 <option value="">すべてのカテゴリー</option>
 													        <option th:each="category : ${categories}" 								                

@@ -35,8 +35,12 @@ import com.example.nagoyameshi.repository.UserRepository;
     	        Collection<GrantedAuthority> authorities = new ArrayList<>();
     	        if (user.isAdmin()) {
     	            authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN")); // Add admin role
-    	        } else {
-    	        	authorities.add(new SimpleGrantedAuthority("ROLE_GENERAL"));
+    	        }
+    	        if (user.paidLicense) {
+    	            authorities.add(new SimpleGrantedAuthority("ROLE_PAID")); // Add paid license role
+    	        }
+    	        if (!user.isAdmin() && !user.paidLicense) {
+    	            authorities.add(new SimpleGrantedAuthority("ROLE_GENERAL")); // Add general role if not admin or paid
     	        }
     	        // If you have more roles, you can check and add them here
 

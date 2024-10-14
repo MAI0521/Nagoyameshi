@@ -35,7 +35,7 @@ public class User {
      private String password;
  
      @Column(name = "paid_license")
-     private boolean paidLicense;
+	 public boolean paidLicense;
  
      @Column(name = "admin")
      private boolean admin;

@@ -97,13 +97,11 @@ import com.example.nagoyameshi.repository.RestaurantRepository;
      }
 
      public Page<Restaurant> findAllByOrderByReviewCountDesc(Pageable pageable) {
-		return null;
-    	    // Implement logic to retrieve restaurants sorted by review count
+    	 return restaurantRepository.findAllSortedByReviewCount(pageable);
     	}
 
-     public Page<Restaurant> findAllByOrderByAverageScoreDesc(Pageable pageable) {
-		return null;
-    	    // Implement logic to retrieve restaurants sorted by average score
-    	}
+    public Page<Restaurant> findAllByOrderByAverageScoreDesc(Pageable pageable) {
+    	return restaurantRepository.findAllSortedByAverageScore(pageable);
+		}
    
  }

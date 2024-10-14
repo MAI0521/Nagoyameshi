@@ -77,4 +77,5 @@ public class ReviewService {
 	public List<Object[]>getAverageReviewsPerRestaurant() {
 		return reviewRepository.averageReviewsPerRestaurant();
 	}
+
 }

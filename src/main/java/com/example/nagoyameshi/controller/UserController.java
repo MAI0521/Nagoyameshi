@@ -1,6 +1,13 @@
 package com.example.nagoyameshi.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -16,17 +23,22 @@ import com.example.nagoyameshi.entity.User;
 import com.example.nagoyameshi.form.UserEditForm;
 import com.example.nagoyameshi.repository.UserRepository;
 import com.example.nagoyameshi.security.UserDetailsImpl;
+import com.example.nagoyameshi.service.StripeService;
 import com.example.nagoyameshi.service.UserService;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 @Controller
 @RequestMapping("/user")
 public class UserController {
     private final UserRepository userRepository; 
-    private final UserService userService; 
+    private final UserService userService;
+    private final StripeService stripeService;
     
-    public UserController(UserRepository userRepository, UserService userService) {
+    public UserController(UserRepository userRepository, UserService userService, StripeService stripeService) {
         this.userRepository = userRepository;
         this.userService = userService; 
+        this.stripeService = stripeService;
     }    
     
     @GetMapping
@@ -68,4 +80,58 @@ public class UserController {
         
         return "redirect:/user";
     } 
+    
+//    @GetMapping("/upgraded")
+//    public String upgrade(@ModelAttribute 
+//    		BindingResult bindingResult, 
+//    		RedirectAttributes redirectAttributes) {
+//        // メールアドレスが変更されており、かつ登録済みであれば、BindingResultオブジェクトにエラー内容を追加する
+//    	Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//    	User user = userRepository.findByEmail(authentication.getName());
+//    	userService.updateUserPaidStatus(user);
+//        
+//        return "redirect:/user?upgraded";
+//    } 
+    
+//    @GetMapping("/create-checkout-session")
+//    public String createCheckoutSession(@AuthenticationPrincipal UserDetailsImpl userDetailsImpl, 
+//    		 HttpServletRequest httpServletRequest,
+//    		 Model model) {        
+//        User user = userRepository.getReferenceById(userDetailsImpl.getUser().getId());
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        
+//        String sessionId = stripeService.createStripeSession(authentication.getName(), httpServletRequest);
+//        if (sessionId.isEmpty()) {
+//            model.addAttribute("error", "Failed to create a payment session.");
+//            return "redirect:/user";  // Stay on the same page or show an error message
+//        }
+        
+        // Redirect to Stripe's checkout page
+//        return "redirect:https://checkout.stripe.com/pay/" + sessionId;
+//    } 
+    
+    @PostMapping("/create-checkout-session")
+    public ResponseEntity<Map<String, String>> createCheckoutSession(@AuthenticationPrincipal UserDetailsImpl userDetailsImpl, 
+    		HttpServletRequest httpServletRequest,
+    		Model model) {
+        // Create Stripe session and handle the response
+    	
+    	System.out.println("Creating checkout session for user: " + userDetailsImpl.getUser().getEmail());
+    	
+    	User user = userRepository.getReferenceById(userDetailsImpl.getUser().getId());
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String sessionId;
+        try {
+            sessionId = stripeService.createStripeSession(authentication.getName(), httpServletRequest);
+            System.out.println("Successfully created sessionId: " + sessionId);
+        } catch (Exception e) {
+            System.err.println("Error creating Stripe session: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", "Failed to create checkout session"));
+        }
+        
+        Map<String, String> response = new HashMap<>();
+        response.put("sessionId", sessionId);
+        // Redirect or respond as needed
+        return ResponseEntity.ok(response); // Redirect to a success page or similar
+    }
 }
