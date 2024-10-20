@@ -1,5 +1,7 @@
 package com.example.nagoyameshi.repository;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -74,4 +76,13 @@ import com.example.nagoyameshi.entity.Restaurant;
 			"LEFT JOIN Review rv ON r.id = rv.restaurant.id " +
 			"GROUP BY r.id ORDER BY AVG(rv.starId) DESC")
 	Page<Restaurant> findAllSortedByAverageScore(Pageable pageable);
+	
+	public List<Restaurant> findTop8ByOrderByCreatedAtDesc();   
+	
+	@Query("SELECT r FROM Restaurant r " +
+	 		   "LEFT JOIN Reservation rs ON r.id = rs.restaurant.id " +
+	            "GROUP BY r.id " +
+	            "ORDER BY COUNT(rs.id) DESC")
+	List<Restaurant> findAllByOrderByReservationCountDesc(Pageable pageable);
+	    
  }

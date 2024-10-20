@@ -4,9 +4,11 @@ package com.example.nagoyameshi.service;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -103,5 +105,15 @@ import com.example.nagoyameshi.repository.RestaurantRepository;
     public Page<Restaurant> findAllByOrderByAverageScoreDesc(Pageable pageable) {
     	return restaurantRepository.findAllSortedByAverageScore(pageable);
 		}
+    
+ // 作成日時が新しい順に8件を取得する
+    public List<Restaurant> findTop8RestaurantsByOrderByCreatedAtDesc() {
+        return restaurantRepository.findTop8ByOrderByCreatedAtDesc();
+    }
+
+    // 予約数が多い順に3件を取得する
+    public List<Restaurant> findTop3RestaurantsByOrderByReservationCountDesc() {
+        return restaurantRepository.findAllByOrderByReservationCountDesc(PageRequest.of(0, 3));
+    }  
    
  }

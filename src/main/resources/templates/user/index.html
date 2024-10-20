@@ -87,11 +87,11 @@
 <!--                                 <form method="get" th:action="@{/user/downgrade}">-->
                                  <div class="row pb-2 mb-2 border-bottom" sec:authorize="hasAnyAuthority('ROLE_PAID')">
                                      <form method="POST" th:action="@{/user/downgrade}">
-									    <div class="form-group">
-<!--											<input type="hidden" name="subscription_id" th:value="${subscriptionId}"/> -->
-									        <button type="submit" class="btn text-white shadow-sm w-100 nagoyameshi-btn">解約する</button>
-									    </div>  
-									</form> 
+								        <div class="form-group">
+								            <input type="hidden" name="subscription_id" th:value="${subscriptionId}"/>
+								            <button type="submit" class="btn text-white shadow-sm w-100 nagoyameshi-btn">解約する</button>
+								        </div>  
+								    </form>
                                  </div>
                                  <div class="row pb-2 mb-2 border-bottom" sec:authorize="hasAnyAuthority('ROLE_GENERAL')">
                                      <div class="col-4">

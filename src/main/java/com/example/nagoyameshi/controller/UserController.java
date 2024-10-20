@@ -35,6 +35,7 @@ import com.example.nagoyameshi.service.UserService;
 import com.stripe.model.checkout.Session;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.transaction.Transactional;
 
 @Controller
 @RequestMapping("/user")
@@ -144,7 +145,8 @@ public class UserController {
     }
     
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
-    
+   
+    @Transactional
     @GetMapping("/upgraded")
     public String upgraded(@RequestParam("session_id") String sessionId, Model model, RedirectAttributes redirectAttributes) {
         // You can fetch the session details from Stripe using the session ID
@@ -160,6 +162,7 @@ public class UserController {
         
         Map<String, String> paymentIntentObject = new HashMap<>();
         paymentIntentObject.put("customerEmail", session.getCustomerEmail());
+        paymentIntentObject.put("subscriptionId", session.getSubscription());
         if (!paymentIntentObject.containsKey("customerEmail")) {
             logger.error("Invalid payment intent object: {}", paymentIntentObject);
             throw new IllegalArgumentException("Invalid payment intent data.");
@@ -167,6 +170,7 @@ public class UserController {
 
         // Extract the username and other relevant data from the payment intent object
         String userName = paymentIntentObject.get("customerEmail");
+        String subscriptionId = paymentIntentObject.get("subscriptionId");
 
         // Retrieve the user by email (assuming userName is the email)
         User user = userRepository.findByEmail(userName);
@@ -174,7 +178,8 @@ public class UserController {
         // Check if the user exists
         if (user != null) {
             // Assuming you have a field in User to track membership status
-            user.setPaidLicense(true); // Update the user's membership status
+            user.setPaidLicense(true); 
+            user.setSubscriptionId(subscriptionId); // Update the user's membership status
             userRepository.save(user); // Save the updated user back to the repository
             logger.info("User membership status updated for: {}", userName);
         } else {
@@ -197,25 +202,33 @@ public class UserController {
         return "redirect:/user"; // Return the success view where you can display session details
     }
     
+    @Transactional
     @PostMapping("/downgrade")
     public String cancelSubscription(
-    		@RequestParam("subscription_id") String subscriptionId,
-    		@AuthenticationPrincipal UserDetailsImpl userDetailsImpl, 
-    		Model model,
+//            @RequestParam("subscription_id") String subscriptionId,
+            @AuthenticationPrincipal UserDetailsImpl userDetailsImpl, 
+            Model model,
             RedirectAttributes redirectAttributes) {
         
         // Retrieve the user
-        User user = userRepository.getReferenceById(userDetailsImpl.getUser().getId());
-//        Hibernate.initialize(user.getSubscriptions()); 
-        // Cancel the subscription here (you'll need to implement this logic)
+    	 String subscriptionId = userDetailsImpl.getUser().getSubscriptionId();
+    	 
+        // Cancel the subscription
         try {
             stripeService.cancelSubscription(subscriptionId); // Call your Stripe service to cancel the subscription
         } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("errorMessage", "解約中にエラーが発生しました。");
+            // Log the error for debugging purposes
+            System.err.println("Error canceling subscription: " + e.getMessage());
+            
+//            redirectAttributes.addFlashAttribute("errorMessage", "解約中にエラーが発生しました。");
             return "redirect:/user"; // Redirect with error
         }
 
-        // Update user's role to GENERAL after canceling the subscription
+        User user = userRepository.getReferenceById(userDetailsImpl.getUser().getId());
+        user.setPaidLicense(false); // Set the paidLicense field to false (assuming this exists)
+        user.setSubscriptionId(null); // Remove the subscription ID after cancellation
+        userRepository.save(user);
+        
         UserDetailsImpl updatedUserDetails = new UserDetailsImpl(user, null); 
         Authentication newAuth = new UsernamePasswordAuthenticationToken(
                 updatedUserDetails, 

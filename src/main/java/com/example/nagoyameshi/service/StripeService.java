@@ -72,19 +72,42 @@ public class StripeService {
     public void cancelSubscription(String subscriptionId) {
         // Set your Stripe API key
     	Stripe.apiKey = stripeApiKey;
+    	
+//    	try {
+//            // Step 1: List customers with the specified email
+//            CustomerListParams params = CustomerListParams.builder()
+//                    .setEmail(getCurrentUserName()) // Replace with the customer's email
+//                    .build();
+//
+//            List<Customer> customers = Customer.list(params).getData();
+//
+//            // Check if customers are found
+//            if (customers.isEmpty()) {
+//                System.err.println("No customer found with that email.");
+//                return; // Exit if no customers found
+//            }
 
-        try {
-            // Retrieve the subscription object from Stripe
-        	Subscription subscription = Subscription.retrieve(subscriptionId);
+            // Step 2: Assuming we take the first customer (you may want to handle multiple customers)
+//            Customer customer = customers.get(0);
+//            String customerId = customer.getId();
+//            String subscriptionId = users.getSubscriptionId();
 
-        	SubscriptionUpdateParams params =
-        	  SubscriptionUpdateParams.builder()
-        	  .setCancelAtPeriodEnd(true)
-        	  .build();
+            // Step 3: Retrieve the subscription using the provided subscriptionId
+    	try {
+            // Step 3: Retrieve the subscription using the provided subscriptionId
+            Subscription subscription = Subscription.retrieve(subscriptionId);
 
-        	subscription.update(params);
+            // Step 4: Update the subscription to cancel it at the end of the period
+            SubscriptionUpdateParams cancelParams = SubscriptionUpdateParams.builder()
+                    .setCancelAtPeriodEnd(true)
+                    .build();
+
+            subscription.update(cancelParams);
+
+            System.out.println("Subscription canceled successfully.");
+            
         } catch (StripeException e) {
-            // Handle errors that may occur during the cancelation process
+            // Handle errors that may occur during the cancellation process
             System.err.println("Error canceling subscription: " + e.getMessage());
         }
     }
