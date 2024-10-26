@@ -22,19 +22,10 @@ public class ReservationInputForm {
 
     // Get the LocalDateTime, parsing the string and handling format
     public LocalDateTime getReservationDateTime() {
-//        if (reservationDateTime == null) {
-//            try {
-//                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-//                reservationDateTime = LocalDateTime.parse(fromReservationDateTime, formatter);
-//            } catch (DateTimeParseException e) {
-                // Handle parsing error if needed
-//                throw new RuntimeException("Invalid date format for reservation date and time", e);
-//            }
-//        }
+
         return reservationDateTime;
     }
 
-    // Optionally, set the reservationDateTime directly if needed
     public void setReservationDateTime(LocalDateTime reservationDateTime) {
         this.reservationDateTime = reservationDateTime;
     }

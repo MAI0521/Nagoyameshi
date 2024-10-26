@@ -65,24 +65,6 @@ public class StripeWebhookController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Internal Server Error");
         }
 
-//        // Handle relevant events
-//        switch (event.getType()) {
-//        case "checkout.session.completed":
-//            EventDataObjectDeserializer dataObjectDeserializer = event.getDataObjectDeserializer();
-//            Optional<StripeObject> sessionOptional = dataObjectDeserializer.getObject();
-//
-//            if (sessionOptional.isPresent() && sessionOptional.get() instanceof Session) {
-//                Session session = (Session) sessionOptional.get();
-////                logger.info("Deserialized Session ID: {}", session.getId());
-//                // Additional logic to process the session
-//            } else {
-////                logger.error("Failed to retrieve session from event. Payload: {}", payload);
-//            }
-//            break;
-//        default:
-////            logger.info("Unhandled event type: {}", event.getType());
-//    }
-
     return ResponseEntity.ok("Success");
     }
 }

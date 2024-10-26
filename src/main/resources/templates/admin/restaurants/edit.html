@@ -49,16 +49,9 @@
 										
 										    <!-- Dropdown for star rating -->
 										    <select id="category" name="category" class="form-select-nagoyameshi" th:field="*{category}">
-										        <option value="" th:selected="${category == null or category == ''}">カテゴリーを選択</option>
-										        <option value="1" th:text="みそかつ"></option>
-											    <option value="2" th:text="ひつまぶし"></option>
-											    <option value="3" th:text="手羽先"></option>
-											    <option value="4" th:text="味噌おでん"></option>
-											    <option value="5" th:text="うどん"></option>
-											    <option value="6" th:text="モーニング"></option>
-											    <option value="7" th:text="ナポリタン"></option>
-											    <option value="8" th:text="その他"></option>
-										    </select>
+											    <option value="" th:selected="${category == null or category == ''}">カテゴリーを選択</option>
+											    <option th:each="catagory : ${categories}" th:value="${catagory.id}" th:text="${catagory.name}"></option>
+											</select>
 										</div>                                                                           
                                      </div>
                                  

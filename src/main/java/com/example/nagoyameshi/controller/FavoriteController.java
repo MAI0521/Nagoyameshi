@@ -61,30 +61,12 @@ public class FavoriteController {
 //    		Favorite favorite = favoriteRepository.findById(userId).orElse(null);
     		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     		String currentUserName = authentication.getName();
-    	
-	//   	 Restaurant restaurant = restaurantRepository.findById(id).orElse(null);
-//   	 Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        String currentUserName = authentication.getName(); 
-//   	 Favorite favorite = favoriteRepository.findByRestaurantOrderByCreatedAtDesc(restaurant);
-//    	Restaurant restaurant = restaurantRepository.findById(id).orElse(null);
-//    	FavoriteService favoriteService = new FavoriteService(null, null, null);
-    	
+
     	 System.out.println("Current User Name: " + currentUserName);
     	 System.out.println("Current Restaurant Name: " + restaurantId);
     	 
     	 favoriteService.addFavorite(restaurantId, userDetails.getUser());
 
-   	 
-//        model.addAttribute("restaurant", restaurant); 
-//        model.addAttribute("favorites", favorite);
-//        model.addAttribute("currentUserName", currentUserName);
-        
-//        if (restaurant != null) {
-//            model.addAttribute("restaurant", restaurant);
-//        } else {
-            // Handle the case where the restaurant is not found
-//            return "redirect:/error";
-//        }
         return "redirect:/restaurants/{restaurantId}";
     }
     

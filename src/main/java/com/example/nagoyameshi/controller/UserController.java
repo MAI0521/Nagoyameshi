@@ -89,35 +89,7 @@ public class UserController {
         
         return "redirect:/user";
     } 
-    
-//    @GetMapping("/upgraded")
-//    public String upgrade(@ModelAttribute 
-//    		BindingResult bindingResult, 
-//    		RedirectAttributes redirectAttributes) {
-//        // メールアドレスが変更されており、かつ登録済みであれば、BindingResultオブジェクトにエラー内容を追加する
-//    	Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//    	User user = userRepository.findByEmail(authentication.getName());
-//    	userService.updateUserPaidStatus(user);
-//        
-//        return "redirect:/user?upgraded";
-//    } 
-    
-//    @GetMapping("/create-checkout-session")
-//    public String createCheckoutSession(@AuthenticationPrincipal UserDetailsImpl userDetailsImpl, 
-//    		 HttpServletRequest httpServletRequest,
-//    		 Model model) {        
-//        User user = userRepository.getReferenceById(userDetailsImpl.getUser().getId());
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        
-//        String sessionId = stripeService.createStripeSession(authentication.getName(), httpServletRequest);
-//        if (sessionId.isEmpty()) {
-//            model.addAttribute("error", "Failed to create a payment session.");
-//            return "redirect:/user";  // Stay on the same page or show an error message
-//        }
-        
-        // Redirect to Stripe's checkout page
-//        return "redirect:https://checkout.stripe.com/pay/" + sessionId;
-//    } 
+   
     
     @PostMapping("/create-checkout-session")
     public ResponseEntity<Map<String, String>> createCheckoutSession(@AuthenticationPrincipal UserDetailsImpl userDetailsImpl, 
@@ -195,8 +167,6 @@ public class UserController {
 
         // Update the security context with the new authentication
         SecurityContextHolder.getContext().setAuthentication(newAuth);
-        
-//        model.addAttribute("upgradeSuccessMessage", "有料プランへの登録が完了しました！");
         redirectAttributes.addFlashAttribute("upgradeSuccessMessage", "有料プランへの登録が完了しました！");
 
         return "redirect:/user"; // Return the success view where you can display session details
@@ -220,7 +190,6 @@ public class UserController {
             // Log the error for debugging purposes
             System.err.println("Error canceling subscription: " + e.getMessage());
             
-//            redirectAttributes.addFlashAttribute("errorMessage", "解約中にエラーが発生しました。");
             return "redirect:/user"; // Redirect with error
         }
 
@@ -242,5 +211,11 @@ public class UserController {
         
         // Redirect to user page
         return "redirect:/user";
+    }
+    
+    
+    @GetMapping("/upgrade")
+    public String showUpgradePage() {
+        return "user/upgrade"; 
     }
 }

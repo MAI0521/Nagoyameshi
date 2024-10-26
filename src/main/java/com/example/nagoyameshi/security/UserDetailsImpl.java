@@ -9,25 +9,14 @@ import com.example.nagoyameshi.entity.User;
  
  public class UserDetailsImpl implements UserDetails {
      private final User user;
-//     private final String fullname;
-//     private String fullname;
-     private final Collection<GrantedAuthority> authorities;
-//     private final Collection<GrantedAuthority> @Override
      
-//     public UserDetailsImpl(User user, Collection<GrantedAuthority> authorities) {
-//         this.user = user;
-//         this.authorities = authorities;
+     private final Collection<GrantedAuthority> authorities;
 
      
      public UserDetailsImpl(User user, Collection<GrantedAuthority> authorities) {
     	 this.user = user;
-//		 this.fullname = "";
     	 this.authorities = authorities;
      }
-     
-//     public User getUser() {
-//         return user;
-//   
      
      public User getUser() {
          return user;
@@ -48,14 +37,6 @@ import com.example.nagoyameshi.entity.User;
      public String getUsername() {
          return user.getEmail();
      }
-     
-//     public boolean isAdmin() {
-//    	 return user.isAdmin();
-//     }
-     
-//     public boolean isPaid() {
-//    	 return user.isPaidLicense();
-//     }
      
      // アカウントが期限切れでなければtrueを返す
      @Override

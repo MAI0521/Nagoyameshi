@@ -13,6 +13,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.nagoyameshi.entity.User;
 import com.example.nagoyameshi.entity.VerificationToken;
+import com.example.nagoyameshi.event.PasswordEventPublisher;
 import com.example.nagoyameshi.event.SignupEventPublisher;
 import com.example.nagoyameshi.form.SignupForm;
 import com.example.nagoyameshi.service.UserService;
@@ -25,11 +26,13 @@ public class AuthController {
      private final UserService userService;  
      private final SignupEventPublisher signupEventPublisher;
      private final VerificationTokenService verificationTokenService;
+     private final PasswordEventPublisher passwordEventPublisher;
      
-     public AuthController(UserService userService, SignupEventPublisher signupEventPublisher, VerificationTokenService verificationTokenService) {         
+     public AuthController(UserService userService, SignupEventPublisher signupEventPublisher, VerificationTokenService verificationTokenService, PasswordEventPublisher passwordEventPublisher) {         
          this.userService = userService;
          this.signupEventPublisher = signupEventPublisher;
          this.verificationTokenService = verificationTokenService;
+         this.passwordEventPublisher = passwordEventPublisher;
      } 
 	 
      @GetMapping("/login")
@@ -60,7 +63,7 @@ public class AuthController {
          if (bindingResult.hasErrors()) {
              return "auth/signup";
          }
-         
+        
          User createdUser = userService.create(signupForm);
          String requestUrl = new String(httpServletRequest.getRequestURL());
          signupEventPublisher.publishSignupEvent(createdUser, requestUrl);
@@ -84,6 +87,5 @@ public class AuthController {
          }
          
          return "auth/verify";         
-     }   
-    
+     }     
 }

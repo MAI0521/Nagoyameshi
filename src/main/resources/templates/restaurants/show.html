@@ -166,17 +166,26 @@
 			                 			<div sec:authorize="isAnonymous()" class="col-lg-4 px-0 ps-lg-4 mb-4">                  
 			                                 <div class="card">
 			                                     <div class="card-body">                                                                                                                                                                                                                     
-			                                         <p class="card-text">予約するには<a th:href="@{/login}">ログイン（有料会員）</a>が必要です。</p>                                                                                                                                            
+			                                         <p class="card-text">予約するには<a th:href="@{/auth/login}">ログイン（有料会員）</a>が必要です。</p>                                                                                                                                            
 			                                         <button type="submit" class="btn text-white shadow-sm w-100 nagoyameshi-btn" disabled>予約する</button>                                                                                                                
 			                                     </div>
 			                                 </div>  
 			                             </div> 
-			                             <div sec:authorize="isAuthenticated()" class="col-lg-4 px-0 ps-lg-4 mb-4">                  
+			                             <div sec:authorize="hasAnyAuthority('ROLE_GENERAL')" class="col-lg-4 px-0 ps-lg-4 mb-4">                  
+			                                 <div class="card">
+			                                     <div class="card-body">                                                                                                                                                                                                                     
+			                                         <p class="card-text">予約するには<a th:href="@{/user/upgrade}">有料会員登録</a>が必要です。</p>                                                                                                                                            
+			                                         <button type="submit" class="btn text-white shadow-sm w-100 nagoyameshi-btn" disabled>予約する</button>                                                                                                                
+			                                     </div>
+			                                 </div>  
+			                             </div> 
+			                             <div sec:authorize="hasAnyAuthority('ROLE_PAID')" class="col-lg-4 px-0 ps-lg-4 mb-4">                  
                                          <div class="card">
                                              <div class="card-body"> 
                                                  <form method="get" th:action="@{/restaurants/__${restaurant.getId()}__/reservations/input}" th:object="${reservationInputForm}">                                                                                                                                                                       
                                                      <div class="form-group mb-2">                                            
                                                          <label for="fromReservationDateTime" class="col-form-label text-md-left fw-bold">予約日時</label>    
+                                                         <p class="small-text">(※営業時間内で指定してください)</p>
                                                          <div th:if="${#fields.hasErrors('fromReservationDateTime')}" class="text-danger small mb-2" th:errors="*{fromReservationDateTime}"></div>                                          
                                                          <input type="text" class="form-control" placeholder="例: 2024-12-31 18:30" th:field="*{fromReservationDateTime}">                                                                     
                                                      </div>

@@ -17,14 +17,26 @@ import org.springframework.web.multipart.MultipartFile;
 import com.example.nagoyameshi.entity.Restaurant;
 import com.example.nagoyameshi.form.RestaurantEditForm;
 import com.example.nagoyameshi.form.RestaurantRegisterForm;
+import com.example.nagoyameshi.repository.FavoriteRepository;
+import com.example.nagoyameshi.repository.ReservationRepository;
 import com.example.nagoyameshi.repository.RestaurantRepository;
+import com.example.nagoyameshi.repository.ReviewRepository;
  
  @Service
  public class RestaurantService {
-     private final RestaurantRepository restaurantRepository;    
+     private final RestaurantRepository restaurantRepository;  
+     private final FavoriteRepository favoriteRepository; 
+     private final ReservationRepository reservationRepository; 
+     private final ReviewRepository reviewRepository; 
      
-     public RestaurantService(RestaurantRepository restaurantRepository) {
-         this.restaurantRepository = restaurantRepository;        
+     public RestaurantService(RestaurantRepository restaurantRepository,
+    		 FavoriteRepository favoriteRepository,
+    		 ReservationRepository reservationRepository,
+    		 ReviewRepository reviewRepository) {
+         this.restaurantRepository = restaurantRepository;  
+         this.reviewRepository = reviewRepository;
+		 this.reservationRepository = reservationRepository;
+		 this.favoriteRepository = favoriteRepository;
      }    
      
      @Transactional
@@ -108,12 +120,23 @@ import com.example.nagoyameshi.repository.RestaurantRepository;
     
  // 作成日時が新しい順に8件を取得する
     public List<Restaurant> findTop8RestaurantsByOrderByCreatedAtDesc() {
-        return restaurantRepository.findTop8ByOrderByCreatedAtDesc();
+        return restaurantRepository.findTop8RestaurantsByOrderByCreatedAtDesc();
     }
 
     // 予約数が多い順に3件を取得する
-    public List<Restaurant> findTop3RestaurantsByOrderByReservationCountDesc() {
-        return restaurantRepository.findAllByOrderByReservationCountDesc(PageRequest.of(0, 3));
+    public List<Restaurant> findTop3RestaurantsByOrderByReviewCountDesc() {
+        return restaurantRepository.findTop3RestaurantsByOrderByReviewCountDesc(PageRequest.of(0, 3));
     }  
+    
+    @Transactional
+    public void deleteRestaurant(Integer id) {
+        // First, delete all favorites associated with the restaurant
+    	 favoriteRepository.deleteByRestaurantId(id);
+	   	 reviewRepository.deleteByRestaurantId(id);
+	   	 reservationRepository.deleteByRestaurantId(id);
+
+        // Now, delete the restaurant itself
+         restaurantRepository.deleteById(id);
+    }
    
  }

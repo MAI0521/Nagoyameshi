@@ -96,22 +96,23 @@
                                      </div>
                                  </div>
                                  
-                                 <div class="form-group row mb-3">
-								    <div class="col-md-5">
-								        <label for="paidLicense" class="col-form-label text-md-left fw-bold">
-								            <div class="d-flex align-items-center">
-								                <span>有料プランを希望　</span>
-								                <span class="badge bg-brown">必須</span>
-								            </div>
-								        </label>
-								    </div>
-								    <input type="checkbox" id="paidLicense" class="custom-checkbox" th:field="*{paidLicense}">
+<!--                                 <div class="form-group row mb-3">-->
+<!--								    <div class="col-md-5">-->
+<!--								        <label for="paidLicense" class="col-form-label text-md-left fw-bold">-->
+<!--								            <div class="d-flex align-items-center">-->
+<!--								                <span>有料プランを希望　</span>-->
+								              
+<!--								            </div>-->
+<!--								        </label>-->
+<!--								    </div>-->
+<!--								    <input type="checkbox" id="paidLicense" class="custom-checkbox" th:field="*{paidLicense}">-->
 <!--								    <span class="custom-checkbox"></span>-->
-								    <div class="col-md-7">
-								        <div th:if="${#fields.hasErrors('paidLicense')}" class="text-danger small mb-2" th:errors="*{paidLicense}"></div>
-								        <input type="hidden" th:field="*{paidLicense}" value="false"/> <!-- This ensures the checkbox state is captured correctly when unchecked -->
-								    </div>
-								</div>
+<!--								    <div class="col-md-7">-->
+<!--								        <div th:if="${#fields.hasErrors('paidLicense')}" class="text-danger small mb-2" th:errors="*{paidLicense}"></div>-->
+<!--								        <input type="hidden" th:field="*{paidLicense}" value="false"/>  This ensures the checkbox state is captured correctly when unchecked -->
+<!--								    </div>-->
+<!--								    <p>※チェックをいれるとユーザー登録後、アップグレード画面に進みます。</p>-->
+<!--								</div>-->
                                  
                                  <div class="form-group d-flex justify-content-center my-4">
                                      <button type="submit" class="btn text-white shadow-sm w-50 nagoyameshi-btn">登録</button>

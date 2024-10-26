@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.nagoyameshi.entity.User;
+import com.example.nagoyameshi.form.PasswordResetForm;
 import com.example.nagoyameshi.form.SignupForm;
 import com.example.nagoyameshi.form.UserEditForm;
 import com.example.nagoyameshi.repository.UserRepository;
@@ -92,7 +93,6 @@ public class UserService {
 
         // Check if the user exists
         if (user != null) {
-            // Assuming you have a field in User to track membership status
             user.setPaidLicense(true); // Update the user's membership status
             userRepository.save(user); // Save the updated user back to the repository
             logger.info("User membership status updated for: {}", userName);
@@ -103,16 +103,21 @@ public class UserService {
         }
     }
 
-    
-//    @Transactional
-//    public User updateUserPaidStatus(String email) {
-//        User user = userRepository.findByEmail(email);
-//        if (user != null) {
-//            user.setPaidLicense(true);
-//            userRepository.save(user);
-//            logger.info("Activated paid license for user: {}", user);
-//            return user;
-//        }
-//        throw new UserNotFoundException("User not found for email: " + email);
-//    }
+	public boolean isEmailNotRegistered(String email) {
+		return findByEmail(email) == null;
+	}
+	
+	@Transactional
+	public User updatePassword(User user, PasswordResetForm passwordResetForm) {
+	    // Encode the new password before saving
+	    String encodedPassword = passwordEncoder.encode(passwordResetForm.getPassword());
+	    user.setPassword(encodedPassword);
+	    
+	    return userRepository.save(user);
+	}
+	
+	public User findByEmail(String email) {
+	    return userRepository.findByEmail(email);
+	}
+
 }

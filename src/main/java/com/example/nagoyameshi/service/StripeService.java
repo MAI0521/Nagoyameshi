@@ -72,27 +72,7 @@ public class StripeService {
     public void cancelSubscription(String subscriptionId) {
         // Set your Stripe API key
     	Stripe.apiKey = stripeApiKey;
-    	
-//    	try {
-//            // Step 1: List customers with the specified email
-//            CustomerListParams params = CustomerListParams.builder()
-//                    .setEmail(getCurrentUserName()) // Replace with the customer's email
-//                    .build();
-//
-//            List<Customer> customers = Customer.list(params).getData();
-//
-//            // Check if customers are found
-//            if (customers.isEmpty()) {
-//                System.err.println("No customer found with that email.");
-//                return; // Exit if no customers found
-//            }
 
-            // Step 2: Assuming we take the first customer (you may want to handle multiple customers)
-//            Customer customer = customers.get(0);
-//            String customerId = customer.getId();
-//            String subscriptionId = users.getSubscriptionId();
-
-            // Step 3: Retrieve the subscription using the provided subscriptionId
     	try {
             // Step 3: Retrieve the subscription using the provided subscriptionId
             Subscription subscription = Subscription.retrieve(subscriptionId);
@@ -112,35 +92,4 @@ public class StripeService {
         }
     }
 }
-    
-    
-//    public void processSessionCompleted(Event event) {
-//        Optional<StripeObject> optionalStripeObject = event.getDataObjectDeserializer().getObject();
-//         
-//        optionalStripeObject.ifPresentOrElse(stripeObject -> {
-//            // Cast the StripeObject to a Session object
-//            Session session = (Session) stripeObject;
-//            
-//            // Generate SessionRetrieveParams to expand "payment_intent"
-//            SessionRetrieveParams sessionRetrieveParams = SessionRetrieveParams.builder()
-//                .addExpand("payment_intent")
-//                .build();
-//
-//            try {
-//                Session retrievedSession = Session.retrieve(session.getId(), sessionRetrieveParams, null);
-//                Map<String, String> metadata = retrievedSession.getPaymentIntentObject().getMetadata();
-//                userService.createCheckoutSession(metadata);
-//                System.out.println("Reservation information registration succeeded");
-//            } catch (StripeException e) {
-//                System.out.println("Reservation information registration failed");
-//                throw new RuntimeException("Failed to register reservation information", e);  // Optionally re-throw
-//            }
-//
-//        }, () -> {
-//            System.out.println("Failed to deserialize session object from event 2.");
-//        });
-//
-//        // Print the Stripe API version and stripe-java version for logging
-//        System.out.println("Stripe API Version: " + event.getApiVersion());
-//        System.out.println("stripe-java Version: " + Stripe.VERSION + ", stripe-java API Version: " + Stripe.API_VERSION);
-//    }
+ 
