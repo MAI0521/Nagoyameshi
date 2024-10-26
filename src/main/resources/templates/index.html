@@ -128,7 +128,7 @@
 				            <div class="col">
 				                <!-- Corrected form tag -->
 				                <a th:href="@{/restaurants(category=1)}" class="card-link">
-				                    <div class="card text-white">
+				                    <div class="card text-white" style="height: 200px;">
 				                        <!-- Add valid image source or Thymeleaf dynamic path -->
 				                        <img th:src="@{/storage/misokatsu9.jpg}" class="card-img faint-image vertical-card-image" alt="みそかつ">
 				                        <div class="card-img-overlay d-flex justify-content-center align-items-center nagoyameshi-overlay-background">
@@ -140,7 +140,7 @@
 				            <div class="col">
 				                <!-- Corrected form tag -->
 				                <a th:href="@{/restaurants(category=2)}" class="card-link">
-				                    <div class="card text-white">
+				                    <div class="card text-white" style="height: 200px;">
 				                        <!-- Add valid image source or Thymeleaf dynamic path -->
 				                        <img th:src="@{/storage/hitsumabushi0.jpg}" class="card-img faint-image vertical-card-image" alt="ひつまぶし">
 				                        <div class="card-img-overlay d-flex justify-content-center align-items-center nagoyameshi-overlay-background">
@@ -152,7 +152,7 @@
 				            <div class="col">
 				                <!-- Corrected form tag -->
 				                <a th:href="@{/restaurants(category=3)}" class="card-link">
-				                    <div class="card text-white">
+				                    <div class="card text-white" style="height: 200px;">
 				                        <!-- Add valid image source or Thymeleaf dynamic path -->
 				                        <img th:src="@{/storage/tebasaki8.jpg}" class="card-img faint-image vertical-card-image" alt="手羽先">
 				                        <div class="card-img-overlay d-flex justify-content-center align-items-center nagoyameshi-overlay-background">
@@ -164,7 +164,7 @@
 				            <div class="col">
 				                <!-- Corrected form tag -->
 				                <a th:href="@{/restaurants(category=4)}" class="card-link">
-				                    <div class="card text-white">
+				                    <div class="card text-white" style="height: 200px;">
 				                        <!-- Add valid image source or Thymeleaf dynamic path -->
 				                        <img th:src="@{/storage/misooden3.jpg}" class="card-img faint-image vertical-card-image" alt="味噌おでん">
 				                        <div class="card-img-overlay d-flex justify-content-center align-items-center nagoyameshi-overlay-background">
@@ -176,7 +176,7 @@
 				            <div class="col">
 				                <!-- Corrected form tag -->
 				                <a th:href="@{/restaurants(category=5)}" class="card-link">
-				                    <div class="card text-white">
+				                    <div class="card text-white" style="height: 200px;">
 				                        <!-- Add valid image source or Thymeleaf dynamic path -->
 				                        <img th:src="@{/storage/udon1.jpg}" class="card-img faint-image vertical-card-image" alt="うどん">
 				                        <div class="card-img-overlay d-flex justify-content-center align-items-center nagoyameshi-overlay-background">
@@ -188,7 +188,7 @@
 				            <div class="col">
 				                <!-- Corrected form tag -->
 				                <a th:href="@{/restaurants(category=6)}" class="card-link">
-				                    <div class="card text-white">
+				                    <div class="card text-white" style="height: 200px;">
 				                        <!-- Add valid image source or Thymeleaf dynamic path -->
 				                        <img th:src="@{/storage/morning0.jpg}" class="card-img faint-image vertical-card-image" alt="モーニング">
 				                        <div class="card-img-overlay d-flex justify-content-center align-items-center nagoyameshi-overlay-background">
@@ -200,7 +200,7 @@
 				            <div class="col">
 				                <!-- Corrected form tag -->
 				                <a th:href="@{/restaurants(category=7)}" class="card-link">
-				                    <div class="card text-white">
+				                    <div class="card text-white" style="height: 200px;">
 				                        <!-- Add valid image source or Thymeleaf dynamic path -->
 				                        <img th:src="@{/storage/napolitan0.jpg}" class="card-img faint-image vertical-card-image" alt="ナポリタン">
 				                        <div class="card-img-overlay d-flex justify-content-center align-items-center nagoyameshi-overlay-background">
@@ -212,7 +212,7 @@
 				            <div class="col">
 				                <!-- Corrected form tag -->
 				                <a th:href="@{/restaurants(category=8)}" class="card-link">
-				                    <div class="card text-white">
+				                    <div class="card text-white" style="height: 200px;">
 				                        <!-- Add valid image source or Thymeleaf dynamic path -->
 				                        <img th:src="@{/storage/uirou1.jpg}" class="card-img faint-image vertical-card-image" alt="その他">
 				                        <div class="card-img-overlay d-flex justify-content-center align-items-center nagoyameshi-overlay-background">
@@ -225,9 +225,8 @@
 					</div>
 					<div class="mb-5">
 							<span th:text="他のカテゴリーを選択："></span>
-					        <span th:each="category : ${categories}">
-					        <span th:if="${category != null and category.id > 8}">
-								<span th:each="category : ${categories}">
+							<span th:each="category : ${categories}">
+					        <span th:if="${category.id > 8}">
 					            <a th:href="@{/restaurants(category= ${category.getId()})}"
 					               th:text="${category.getName()}"
 					               class="btn btn-online-secondary btn-light-gray-border me-1 mb-2">

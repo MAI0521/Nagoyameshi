@@ -6,9 +6,6 @@
    font-family: 'Noto Sans JP', sans-serif;  
  }
  
- .card {
-    height: 250px; /* Adjust to your preferred height */
-}
 
 .card-img {
     width: 100%; /* Make the image take the full width of the card */
