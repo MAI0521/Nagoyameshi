@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.filter.HiddenHttpMethodFilter;
 
@@ -28,9 +29,10 @@ public class WebSecurityConfig {
             )
             .formLogin((form) -> form
                 .loginPage("/login")
-                .defaultSuccessUrl("/?loggedIn")
+                .successHandler(new SavedRequestAwareAuthenticationSuccessHandler())
                 .loginProcessingUrl("/login")
-                .failureUrl("/login")
+                .defaultSuccessUrl("/?loggedIn")
+                .failureUrl("/login?error")
                 .permitAll()
             )
             .logout((logout) -> logout
