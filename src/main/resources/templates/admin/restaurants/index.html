@@ -94,8 +94,10 @@
                                                  <div class="modal-content">
                                                      <div class="modal-header">
                                                          <h5 class="modal-title" th:id="${'deleteRestaurantModalLabel' + restaurant.getId()}" th:text="${restaurant.getVenueName() + 'を削除してもよろしいですか？'}"></h5>
-                                                         <div><p>※ユーザーが投稿したレビュー、予約、お気に入りなどの登録もデータベースから削除されます。</p></div>
                                                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="閉じる"></button>
+                                                     </div>
+                                                     <div class="modal-body">
+								                		 <h6>※ユーザーが投稿したレビュー、予約、お気に入りなどの登録もデータベースから削除されます。</h6>
                                                      </div>
                                                      <div class="modal-footer">
 													    <form method="post" th:action="@{/admin/restaurants/__${restaurant.getId()}__/delete}">
