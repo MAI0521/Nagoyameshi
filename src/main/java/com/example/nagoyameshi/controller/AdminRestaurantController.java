@@ -60,12 +60,10 @@ public class AdminRestaurantController  {
     		 @RequestParam(name = "keyword", required = false) String keyword, 
      		 @RequestParam(name = "category", required = false) Integer categoryId) { 
          Page<Restaurant> restaurantPage;   
-//         String categoryName = "";
          
          if (categoryId != null) {
              restaurantPage = restaurantRepository.findByCategoryId(categoryId, pageable); 
-//             categoryName = categoryRepository.getCategoryById(categoryId).getName();
-//             System.out.println(categoryName);
+
          } else if (keyword != null && !keyword.isEmpty()) {
         	 restaurantPage = restaurantRepository.findByVenueNameLike("%" + keyword + "%", pageable);                
          } else {
@@ -77,11 +75,9 @@ public class AdminRestaurantController  {
          
          model.addAttribute("categories", categories);
          model.addAttribute("selectedCategoryId", categoryId);
-//         model.addAttribute("categoryName", categoryName);
 //       sending the result back to the HTML (with return "admin/restaurants/index" and it is trying to show <tr th:each="restaurant : ${restaurantPage}">)
          model.addAttribute("restaurantPage", restaurantPage);
          model.addAttribute("keyword", keyword);   
-//         model.addAttribute("restaurant", new Restaurant());
  
 	 return "admin/restaurants/index";
 	 }  
@@ -99,8 +95,6 @@ public class AdminRestaurantController  {
      
      @GetMapping("/register")
      public String register(Model model) {
-//    	 model.addAttribute("budgetRange", null);
-//    	 model.addAttribute("HourList", IntStream.range(0, 24).boxed().collect(Collectors.toList()));
     	 List<Category> categories = categoryRepository.findAll();
          
          model.addAttribute("categories", categories);

@@ -58,25 +58,6 @@ public class ReservationController {
          return "reservations/index";
      }
 
-//    @GetMapping("/reservations")
-//    public String createReservation(@RequestParam("reservationDate") String reservationDate,
-//    		@RequestParam("reservationTime") String reservationTime) {
-//    	LocalDate date = LocalDate.parse(reservationDate);  // Format: yyyy-MM-dd
-//        LocalTime time = LocalTime.parse(reservationTime);  // Format: HH:mm
-//        
-//        LocalDateTime reservationDateTime = LocalDateTime.of(date, time);
-//        System.out.println("Reservation DateTime: " + reservationDateTime);
-//        
-//        return "redirect:/restaurants/{id}/reservations/confirm";
-//    }
-//    public String index(@AuthenticationPrincipal UserDetailsImpl userDetailsImpl, @PageableDefault(page = 0, size = 10, sort = "id", direction = Direction.ASC) Pageable pageable, Model model) {
-//        User user = userDetailsImpl.getUser();
-//        Page<Reservation> reservationPage = reservationRepository.findByUserOrderByCreatedAtDesc(user, pageable);
-//        
-//        model.addAttribute("reservationPage", reservationPage);         
-//        
-//        return "reservations/index";
-//    }
     
      @GetMapping("/restaurants/{id}/reservations/input")
      public String input(@PathVariable(name = "id") Integer id,

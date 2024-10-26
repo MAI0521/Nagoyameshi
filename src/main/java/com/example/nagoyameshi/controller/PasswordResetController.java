@@ -61,11 +61,6 @@ public class PasswordResetController {
             bindingResult.addError(fieldError);  
             return "auth/pwreset";
         }  
-    	// Return to the form view
-        
-//        if (bindingResult.hasErrors()) {
-//            return "auth/pwreset";
-//        }
 
         // Publish the password reset event
         String requestUrl = request.getRequestURL().toString();

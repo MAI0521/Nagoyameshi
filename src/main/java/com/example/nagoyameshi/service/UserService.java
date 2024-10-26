@@ -93,7 +93,6 @@ public class UserService {
 
         // Check if the user exists
         if (user != null) {
-            // Assuming you have a field in User to track membership status
             user.setPaidLicense(true); // Update the user's membership status
             userRepository.save(user); // Save the updated user back to the repository
             logger.info("User membership status updated for: {}", userName);
@@ -121,15 +120,4 @@ public class UserService {
 	    return userRepository.findByEmail(email);
 	}
 
-//    @Transactional
-//    public User updateUserPaidStatus(String email) {
-//        User user = userRepository.findByEmail(email);
-//        if (user != null) {
-//            user.setPaidLicense(true);
-//            userRepository.save(user);
-//            logger.info("Activated paid license for user: {}", user);
-//            return user;
-//        }
-//        throw new UserNotFoundException("User not found for email: " + email);
-//    }
 }

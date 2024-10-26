@@ -13,7 +13,6 @@ import com.example.nagoyameshi.entity.Restaurant;
  public interface RestaurantRepository extends JpaRepository<Restaurant, Integer> {
 	public Page<Restaurant> findByVenueNameLike(String keyword, Pageable pageable);
 	public Page<Restaurant> findByCategoryId(Integer categoryId, Pageable pageable);
-//	 public Page<Restaurant> findByCategoryLike(String categoryName, Pageable pageable);
 	@Query("SELECT r FROM Restaurant r WHERE r.venueName LIKE %:keyword% OR r.description LIKE %:keyword% ORDER BY r.budgetRange ASC")
 	Page<Restaurant> findByVenueNameOrDescriptionLikeOrderByBudgetRangeAsc(@Param("keyword") String keyword, Pageable pageable);
 	@Query("SELECT r FROM Restaurant r WHERE r.venueName LIKE %:keyword% OR r.description LIKE %:keyword% ORDER BY r.budgetRange DESC")

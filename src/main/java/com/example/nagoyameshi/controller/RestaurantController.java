@@ -80,8 +80,7 @@ public class RestaurantController {
     		} else {
     			restaurantPage = restaurantRepository.findByCategoryIdOrderByCreatedAtDesc(categoryId, pageable); 
     		}
-//            categoryName = categoryRepository.getCategoryById(categoryId).getName();
-//            System.out.println(categoryName);
+    		
         } else if (keywords != null && !keywords.isEmpty()) {
         	if (order != null && order.equals("budgetRangeAsc")) {
         		restaurantPage = restaurantRepository.findByVenueNameOrDescriptionLikeOrderByBudgetRangeAsc(keywords, pageable);  
@@ -143,7 +142,6 @@ public class RestaurantController {
    	 	Page<Review> review = reviewRepository.findByRestaurantOrderByCreatedAtDesc(restaurant, PageRequest.of(0, 6));
 		 
 	     model.addAttribute("restaurant", restaurant); 
-//	     model.addAttribute("reservationInputForm", new ReservationInputForm());
 	     model.addAttribute("review",review);
 	     model.addAttribute("currentUserName", currentUserName);
 	     if (userDetailsImpl != null) {

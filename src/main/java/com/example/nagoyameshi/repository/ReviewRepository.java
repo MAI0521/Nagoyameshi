@@ -13,7 +13,6 @@ import com.example.nagoyameshi.entity.Review;
 public interface ReviewRepository extends JpaRepository<Review, Integer>{
 
 	public Page<Review> findByRestaurantOrderByCreatedAtDesc(Restaurant restaurant, Pageable pageable);
-//	public List<Review> findTop6ByOrderByCreatedAtDesc();
 	
 	@Query("SELECT r.id, COUNT(rv.id) FROM Restaurant r LEFT JOIN Review rv ON r.id = rv.restaurant.id GROUP BY r.id")
 	List<Object[]> countReviewsPerRestaurant();

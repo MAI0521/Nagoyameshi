@@ -41,16 +41,8 @@ public class AdminCateogryController {
         model.addAttribute("categories", categories);
 
         return "admin/categories/index";
+        
     }
-    
-//    @GetMapping("/{id}")
-//    public String show(@PathVariable(name = "id") Integer id, Model model) {
-//        Category category = categoryRepository.getCategoryById(id);
-//        
-//        model.addAttribute("category", category);
-//        
-//        return "admin/categories/show";
-//    }  
     
     @GetMapping("/register")
     public String register(Model model) {

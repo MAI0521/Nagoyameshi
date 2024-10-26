@@ -42,7 +42,6 @@ import com.example.nagoyameshi.repository.UserRepository;
     	        if (!user.isAdmin() && !user.paidLicense) {
     	            authorities.add(new SimpleGrantedAuthority("ROLE_GENERAL")); // Add general role if not admin or paid
     	        }
-    	        // If you have more roles, you can check and add them here
 
     	        // Return the UserDetailsImpl object with the user and authorities
     	        return new UserDetailsImpl(user, authorities);
