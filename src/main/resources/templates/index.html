@@ -224,9 +224,9 @@
 				        </div>
 					</div>
 					<div class="mb-5">
-					        
+							<span th:text="他のカテゴリーを選択："></span>
+					        <span th:each="category : ${categories}">
 					        <span th:if="${category != null and category.id > 8}">
-								<span th:text="他のカテゴリーを選択："></span>
 								<span th:each="category : ${categories}">
 					            <a th:href="@{/restaurants(category= ${category.getId()})}"
 					               th:text="${category.getName()}"
