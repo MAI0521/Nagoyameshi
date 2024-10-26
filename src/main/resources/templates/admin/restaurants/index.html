@@ -97,10 +97,13 @@
                                                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="閉じる"></button>
                                                      </div>
                                                      <div class="modal-footer">
-                                                         <form method="post"th:action="@{/admin/restaurants/__${restaurant.getId()}__/delete}">
-                                                             <button type="submit" class="btn nagoyameshi-btn-danger text-white shadow-sm">削除</button>
-                                                         </form>
-                                                     </div>
+													    <form method="post" th:action="@{/admin/restaurants/__${restaurant.getId()}__/delete}">
+													        <!-- CSRF Token for security -->
+													        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+													        <input type="hidden" name="_method" value="DELETE"/> <!-- This indicates to treat as DELETE -->
+													        <button type="submit" class="btn nagoyameshi-btn-danger text-white shadow-sm">削除</button>
+													    </form>
+													</div>
                                                  </div>
                                              </div>
                                          </div>      

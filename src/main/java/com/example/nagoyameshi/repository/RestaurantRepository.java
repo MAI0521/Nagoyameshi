@@ -77,12 +77,12 @@ import com.example.nagoyameshi.entity.Restaurant;
 			"GROUP BY r.id ORDER BY AVG(rv.starId) DESC")
 	Page<Restaurant> findAllSortedByAverageScore(Pageable pageable);
 	
-	public List<Restaurant> findTop8ByOrderByCreatedAtDesc();   
+	public List<Restaurant> findTop8RestaurantsByOrderByCreatedAtDesc();   
 	
 	@Query("SELECT r FROM Restaurant r " +
-	 		   "LEFT JOIN Reservation rs ON r.id = rs.restaurant.id " +
+	 		   "LEFT JOIN Review rv ON r.id = rv.restaurant.id " +
 	            "GROUP BY r.id " +
-	            "ORDER BY COUNT(rs.id) DESC")
-	List<Restaurant> findAllByOrderByReservationCountDesc(Pageable pageable);
+	            "ORDER BY COUNT(rv.id) DESC")
+	public List<Restaurant> findTop3RestaurantsByOrderByReviewCountDesc(Pageable pageable);
 	    
  }

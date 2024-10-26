@@ -243,4 +243,10 @@ public class UserController {
         // Redirect to user page
         return "redirect:/user";
     }
+    
+    
+    @GetMapping("/upgrade")
+    public String showUpgradePage() {
+        return "user/upgrade"; 
+    }
 }

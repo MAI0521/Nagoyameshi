@@ -64,7 +64,16 @@
                                      <div class="col">
                                          <span th:text="${user.getEmail()}"></span>
                                      </div>
-                                 </div>                                 
+                                  </div>
+                                  <div class="row pb-2 mb-2 border-bottom">
+									  <div class="col-4">
+										  <span class="fw-bold">会員ステータス</span>
+									  </div>
+									  <div class="col">
+								            <span th:if="${user.getPaidLicense()}">有料会員</span>
+								            <span th:if="${!user.getPaidLicense()}">無料会員</span>
+									  </div>
+								  </div>                                  
                              </div>                                                                                                                           
                          </div>
                      </div>

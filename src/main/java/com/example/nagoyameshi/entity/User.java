@@ -36,6 +36,11 @@ public class User {
  
      @Column(name = "paid_license")
 	 public boolean paidLicense;
+     
+     public boolean getPaidLicense() {
+         return paidLicense;
+     }
+
  
      @Column(name = "admin")
      private boolean admin;

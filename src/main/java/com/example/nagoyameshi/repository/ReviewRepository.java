@@ -19,5 +19,7 @@ public interface ReviewRepository extends JpaRepository<Review, Integer>{
 	List<Object[]> countReviewsPerRestaurant();
 	
 	@Query("SELECT r.id, COALESCE(AVG(rv.starId), 0) FROM Restaurant r LEFT JOIN Review rv ON r.id = rv.restaurant.id GROUP BY r.id")
-	List<Object[]> averageReviewsPerRestaurant(); 
+	List<Object[]> averageReviewsPerRestaurant();
+	
+	void deleteByRestaurantId(Integer id); 
 }

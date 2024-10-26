@@ -107,7 +107,7 @@ public class ReservationController {
              LocalDateTime reservationDateTime = LocalDateTime.parse(reservationInputForm.getFromReservationDateTime().trim(), formatter);
              reservationInputForm.setReservationDateTime(reservationDateTime); // Save parsed date-time back to the form
          } catch (DateTimeParseException e) {
-             bindingResult.rejectValue("fromReservationDateTime", "invalid.date", "日付の形式が正しくありません。");
+             bindingResult.rejectValue("fromReservationDateTime", "invalid.date", "日付の形式が正しくありません。入力例: 2024-12-31 18:30");
          }
 
          // Check for binding errors

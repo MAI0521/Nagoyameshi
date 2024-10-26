@@ -16,4 +16,6 @@ public interface FavoriteRepository extends JpaRepository<Favorite, Integer> {
 	List <Favorite> findByRestaurantAndUser(Restaurant restaurant, User user);
 
 	Page<Favorite> findByUserOrderByCreatedAtDesc(User user, Pageable pageable);
+
+	void deleteByRestaurantId(Integer id);
 }

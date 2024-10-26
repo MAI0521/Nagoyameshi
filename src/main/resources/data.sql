@@ -7,6 +7,7 @@ INSERT IGNORE INTO categories (id, name) VALUES (5,'うどん');
 INSERT IGNORE INTO categories (id, name) VALUES (6,'モーニング');
 INSERT IGNORE INTO categories (id, name) VALUES (7,'ナポリタン');
 INSERT IGNORE INTO categories (id, name) VALUES (8,'その他');
+INSERT IGNORE INTO categories (id, name) VALUES (9,'ういろう');
 
 -- レストランデータ
 INSERT IGNORE INTO restaurants (id, venue_name, image_name, description, postal_code, address, opening_hour, closing_hour, reservation_capacity, budget_range, category_id) VALUES(1,'名古屋みそかつ道場', 'misokatsu1.jpg', '特製の赤味噌だれがかかった、サクサクの味噌かつが自慢。', '460-0001', '名古屋市中村区名駅', 11, 22, 40, 3, 1);

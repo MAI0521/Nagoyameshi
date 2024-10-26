@@ -4,7 +4,6 @@ import org.hibernate.validator.constraints.Length;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
@@ -26,8 +25,7 @@ public class SignupForm {
     @NotBlank(message = "パスワード（確認用）を入力してください。")
     private String passwordConfirmation;   
     
-    @NotNull(message = "有料会員にアップグレード希望の場合はチェックしてください。")
-    private boolean paidLicense; 
+    private boolean paidLicense = false;
     
     
 }
